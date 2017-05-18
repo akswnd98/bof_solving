@@ -1,0 +1,20 @@
+linux
+PLT: Procedure Linkage Table
+GOT: Global Offset Table
+	- 프로그램이 컴파일 되는 시점에서는 라이브러리 함수의 정확한 위치를
+
+windows
+import table
+export table
+
+test code
+
+#include <stdio.h>
+
+int main() {
+	printf("first printf\n");
+	printf("second printf\n");
+
+	return 0;
+}
+
