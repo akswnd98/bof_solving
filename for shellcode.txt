@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+
+int main(int argc, char *argv[]) {
+	char buffer[256];
+	
+	int serv_sock;
+	int clnt_sock;
+
+	struct sockaddr_in serv_addr;
+	int addr_size = sizeof(struct sockaddr_in);
+
+	int pid;
+
+	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+	bind(serv_sock, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in));
+	
+	listen(serv_sock, 5);
+	
+	clnt_sock = accept(serv_sock, (struct sockaddr *)&serv_addr, &addr_size);
+	
+	while(1) {
+		if(!read(serv_sock, buffer, sizeof(buffer) - 1)) {
+			break;
+		}
+		pid = fork();
+		if(!pid) {
+			dup2(clnt_sock, STDOUT_FILENO);
+			execl(buffer, buffer);
+		}
+		wait();
+	}
+	close(clnt_sock);
+	close(serv_sock);
+	
+	return 0;
+}
+
+
+
+* 0x8044000 ~ 0x8045000: stack으로 사용
+
+movl $0x8045000, %esp
+movl %esp, %ebp
+
