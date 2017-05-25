@@ -10,4 +10,3 @@
 	-> close(serv_sock) -> close(pfd[0]) -> close(pfd[1])
 </shell code design>
 
-* 버퍼는 malloc으로 동적 할당
